@@ -6,19 +6,22 @@ interface Props {
     style:  React.CSSProperties;
 }
 
-export class MainContentComponent extends React.Component<Props> {
+export class BlogComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
-                <h2>Main</h2>
+                <h2>Blog</h2>
             </div>
         </>;
     }
 }
 
+
+
 function mapDispatchToProps() {
-    return {};
+
 }
+
 
 function mapStateToProps(state: State) {
     return {
@@ -26,6 +29,6 @@ function mapStateToProps(state: State) {
     }
 }
 
-export const MainContent = connect(
+export const Blog = connect(
     mapStateToProps,
-    mapDispatchToProps)(MainContentComponent);
+    mapDispatchToProps)(BlogComponent)
