@@ -1,15 +1,61 @@
-import React, {Component} from 'react';
-import './App.css';
-import {Navigation} from "./Navigation";
+import * as React from "react";
+import {connect} from "react-redux";
+import {State} from "./State";
+import {Action} from "redux";
+import {Home} from "./Home";
+import {Blog} from "./Blog";
+import {Math} from "./Math"
 
 
-class App extends Component {
-    render() {
-        return <>
-            <Navigation />
+export type NavigationState = string;
+interface NavigationAction extends Action<string> { target: string };
 
-        </>;
+const content = {
+    Home: <Home/>,
+    Blog: <Blog/>,
+    Math: <Math/>
+};
+
+interface Props {
+    style:  React.CSSProperties;
+    onClick: (event :React.MouseEvent<HTMLButtonElement>)  => void;
+    navigationState: NavigationState;
+    content: {[index: string]: any};
+}
+
+const AppComponent = (props: Props) => <>
+    <div style={props.style}>
+        <h2>Navigation</h2>
+        {Object.keys(props.content).map((value, index) => {
+            return <button key={index} onClick={props.onClick}>{value}</button>;
+        })}
+    </div>
+    {props.content[props.navigationState]}
+</>;
+
+export const navigationReducer =
+    (state: NavigationState | undefined = Object.keys(content)[0],
+     action: NavigationAction) : NavigationState => {
+        return action.type === 'NAVIGATE' ? action.target : state;
+};
+
+
+function mapStateToProps(state: State) {
+    return {
+        style: state.style.navigation,
+        navigationState: state.nav.toString(),
+        content: content
     }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch : any) => {
+    return {
+        onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+            dispatch({type: 'NAVIGATE', target: (event.target as HTMLButtonElement).innerText});
+        }
+    }
+};
+
+export const App = connect(
+    mapStateToProps,
+    mapDispatchToProps)(AppComponent);

@@ -1,4 +1,4 @@
-import {NavigationState} from "./Navigation";
+import {NavigationState} from "./App";
 import {StyleState} from "./Style";
 
 export interface State {
