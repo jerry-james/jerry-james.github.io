@@ -4,13 +4,14 @@ import {State} from "./State";
 
 interface Props {
     style:  React.CSSProperties;
+    content: string;
 }
 
 export class MainContentComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
-                <h2>Main</h2>
+                <h2>{this.props.content}</h2>
             </div>
         </>;
     }
@@ -22,7 +23,8 @@ function mapDispatchToProps() {
 
 function mapStateToProps(state: State) {
     return {
-        style: state.style.main
+        style: state.style.main,
+        content: state.nav.toString()
     }
 }
 

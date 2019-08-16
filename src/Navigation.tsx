@@ -1,7 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {State} from "./State";
-import { Action } from "redux";
+import {Action} from "redux";
+import {act} from "react-dom/test-utils";
 
 interface NavigationState {
 
@@ -23,10 +24,13 @@ export class NavigationComponent extends React.Component<Props> {
     }
 }
 
-export const navigationReducer = (state: NavigationState | undefined = {},
-                             action: Action) => {
-    console.log(action);
-    return state;
+export const navigationReducer = (state: NavigationState | undefined = 'Home',
+                             action: NavAction) => {
+    if(action.type === 'NAVIGATE') {
+        return action.target;
+    } else {
+        return state;
+    }
 };
 
 function mapStateToProps(state: State) {
@@ -35,12 +39,16 @@ function mapStateToProps(state: State) {
     }
 }
 
+interface NavAction extends Action<string> { target: string };
+
+function makeAction(target: string): NavAction {
+    return {type: 'NAVIGATE', target: target};
+}
+
 const mapDispatchToProps = (dispatch : any) => {
     return {
         onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
-            let target: string = (event.target as HTMLButtonElement).innerText;
-
-            dispatch({type: 'NAVIGATE', target: target});
+            dispatch(makeAction((event.target as HTMLButtonElement).innerText));
         }
     }
 };
