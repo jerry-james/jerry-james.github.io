@@ -23,18 +23,22 @@ const pages : {
     Blog: <Blog />
 };
 
+const defaultNavigationState = Object.keys(pages)[0];
+
 function Pages(props: { content: string }) {
     return pages[props.content];
 }
 
 export class NavigationComponent extends React.Component<Props> {
     render() {
-
         return <>
             <div style={this.props.style}>
                 <h2>Navigation</h2>
                 {Object.keys(pages).map((value, index) => {
-                    return <button key={index} onClick={this.props.onClick}>{value}</button>;
+                    return <>
+                        <button key={index} onClick={this.props.onClick}>{value}</button>
+                        <br/>
+                    </>;
                 })}
             </div>
             <Pages content={this.props.content}/>
@@ -42,8 +46,9 @@ export class NavigationComponent extends React.Component<Props> {
     }
 }
 
+
 export const navigationReducer =
-    (state: NavigationState | undefined = 'Home',
+    (state: NavigationState | undefined = defaultNavigationState,
      action: NavigationAction) => {
     return action.type === type ? action.target : state;
 };
