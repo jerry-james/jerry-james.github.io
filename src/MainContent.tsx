@@ -11,17 +11,14 @@ interface Props {
 
 export class MainContentComponent extends React.Component<Props> {
     render() {
-        if(this.props.content === 'Home') {
-            return <Home/>
+        switch (this.props.content) {
+            case 'Home':
+                return <Home/>;
+            case 'Blog':
+                return <Blog/>;
+            default:
+                return <></>;
         }
-        if(this.props.content === 'Blog') {
-            return <Blog/>
-        }
-        return <>
-            <div style={this.props.style}>
-                hmm...
-            </div>
-        </>;
     }
 }
 

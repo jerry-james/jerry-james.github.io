@@ -5,6 +5,7 @@ import {Action} from "redux";
 
 export type NavigationState = string;
 interface NavigationAction extends Action<string> { target: string };
+const type = 'NAVIGATE';
 
 interface Props {
     style:  React.CSSProperties;
@@ -23,13 +24,10 @@ export class NavigationComponent extends React.Component<Props> {
     }
 }
 
-export const navigationReducer = (state: NavigationState | undefined = 'Home',
-                             action: NavigationAction) => {
-    if(action.type === 'NAVIGATE') {
-        return action.target;
-    } else {
-        return state;
-    }
+export const navigationReducer =
+    (state: NavigationState | undefined = 'Home',
+     action: NavigationAction) => {
+    return action.type === type ? action.target : state;
 };
 
 function mapStateToProps(state: State) {
@@ -38,10 +36,8 @@ function mapStateToProps(state: State) {
     }
 }
 
-
-
 function makeAction(target: string): NavigationAction {
-    return {type: 'NAVIGATE', target: target};
+    return {type: type, target: target};
 }
 
 const mapDispatchToProps = (dispatch : any) => {

@@ -9,10 +9,7 @@ import {Blog} from "./Blog";
 class App extends Component {
     render() {
         return <>
-            <Navigation>
-                <Home />
-                <Blog />
-            </Navigation>
+            <Navigation />
             <MainContent />
         </>;
     }
