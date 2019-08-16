@@ -8,24 +8,28 @@ import {Provider} from "react-redux";
 import {State} from "./State";
 import {rootReducer} from "./RootReducer";
 
-const sideBar : React.CSSProperties = {
-    position: "fixed",
-    zIndex:1000,
-    top:"0",
-    left:"0",
-    width:160
-};
-
-const mainBar : React.CSSProperties = {
-    marginLeft:160
-};
+function getStyle(marginLeft: number): {
+    navigation: React.CSSProperties;
+    main: React.CSSProperties
+} {
+    return {
+        navigation: {
+            position: "fixed",
+            zIndex: 1000,
+            top: "0",
+            left: "0",
+            width: marginLeft
+        },
+        main: {
+            marginLeft: marginLeft
+        }
+    };
+}
 
 const preloadedState : State = {
-    style: {
-        navigation: sideBar,
-        main: mainBar
-    }
+    style: getStyle(200)
 };
+
 const store = createStore(rootReducer, preloadedState);
 
 ReactDOM.render(
