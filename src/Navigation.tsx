@@ -4,6 +4,7 @@ import {State} from "./State";
 import {Action} from "redux";
 import {Home} from "./Home";
 import {Blog} from "./Blog";
+import {Math} from "./Math"
 
 
 export type NavigationState = string;
@@ -13,35 +14,34 @@ const type = 'NAVIGATE';
 interface Props {
     style:  React.CSSProperties;
     onClick: (event :React.MouseEvent<HTMLButtonElement>)  => void;
-    content: NavigationState;
+    navigationState: NavigationState;
 }
 
-const pages : {
+const content : {
     [index: string]: any
 } = {
     Home: <Home />,
-    Blog: <Blog />
+    Blog: <Blog />,
+    Math: <Math />
 };
 
-const defaultNavigationState = Object.keys(pages)[0];
+const defaultNavigationState = Object.keys(content)[0];
 
-function Pages(props: { content: string }) {
-    return pages[props.content];
-}
+const MainContent = (props: { navigationState: string }) => content[props.navigationState];
 
 export class NavigationComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
                 <h2>Navigation</h2>
-                {Object.keys(pages).map((value, index) => {
+                {Object.keys(content).map((value, index) => {
                     return <>
                         <button key={index} onClick={this.props.onClick}>{value}</button>
                         <br/>
                     </>;
                 })}
             </div>
-            <Pages content={this.props.content}/>
+            <MainContent navigationState={this.props.navigationState}/>
         </>;
     }
 }
@@ -56,7 +56,7 @@ export const navigationReducer =
 function mapStateToProps(state: State) {
     return {
         style: state.style.navigation,
-        content: state.nav.toString()
+        navigationState: state.nav.toString()
     }
 }
 

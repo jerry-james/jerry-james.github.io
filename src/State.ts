@@ -1,11 +1,8 @@
-import * as React from "react";
 import {NavigationState} from "./Navigation";
+import {StyleState} from "./Style";
 
 export interface State {
     nav: NavigationState,
-    style: {
-        navigation: React.CSSProperties,
-        main: React.CSSProperties
-    };
+    style: StyleState;
 
 }
