@@ -5,6 +5,7 @@ import {Action} from "redux";
 import {Home} from "./Home";
 import {Blog} from "./Blog";
 import {Math} from "./Math"
+import './App.css';
 
 
 export type NavigationState = string;
@@ -23,10 +24,11 @@ interface Props {
     content: {[index: string]: any};
 }
 
+
 const AppComponent = (props: Props) => <>
     <div style={props.style}>
-        <h2>Navigation</h2>
-        <div>
+        <h2 className="title">jerry.fyi</h2>
+        <div className="navigation">
             {Object.keys(props.content).map((value, index) => {
                 return <button key={index} onClick={props.onClick}>{value}</button>;
             })}

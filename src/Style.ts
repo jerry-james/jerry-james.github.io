@@ -6,7 +6,7 @@ export type StyleState = {
     main: React.CSSProperties
 };
 
-export const styleReducer = (state: StyleState | undefined = getStyle(200),
+export const styleReducer = (state: StyleState | undefined = getStyle(150),
                              action: Action) => state;
 
 export function getStyle(marginLeft: number): StyleState {
@@ -19,7 +19,7 @@ export function getStyle(marginLeft: number): StyleState {
             width: marginLeft
         },
         main: {
-            marginLeft: marginLeft
+            marginLeft: marginLeft + 10
         }
     };
 }
