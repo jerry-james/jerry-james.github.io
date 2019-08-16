@@ -10,7 +10,7 @@ export class HomeComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
-                <h2>Home</h2>
+                <h2>Home!</h2>
             </div>
         </>;
     }
@@ -19,7 +19,7 @@ export class HomeComponent extends React.Component<Props> {
 
 
 function mapDispatchToProps() {
-
+    return {};
 }
 
 
