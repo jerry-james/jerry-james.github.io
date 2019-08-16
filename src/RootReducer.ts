@@ -1,4 +1,4 @@
-import { combineReducers, Action} from "redux";
+import { combineReducers} from "redux";
 import {styleReducer} from "./Style";
 import {navigationReducer} from "./Navigation";
 

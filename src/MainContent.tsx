@@ -3,10 +3,11 @@ import {connect} from "react-redux";
 import {State} from "./State";
 import {Home} from "./Home";
 import {Blog} from "./Blog";
+import {NavigationState} from "./Navigation";
 
 interface Props {
     style:  React.CSSProperties;
-    content: string;
+    content: NavigationState;
 }
 
 export class MainContentComponent extends React.Component<Props> {

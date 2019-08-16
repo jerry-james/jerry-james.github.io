@@ -31,4 +31,4 @@ function mapStateToProps(state: State) {
 
 export const Blog = connect(
     mapStateToProps,
-    mapDispatchToProps)(BlogComponent)
+    mapDispatchToProps)(BlogComponent);
