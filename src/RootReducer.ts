@@ -1,10 +1,9 @@
+import { combineReducers, Action} from "redux";
 import {State} from "./State";
-import { combineReducers, Action, AnyAction } from "redux";
-
-
+import {styleReducer} from "./Style";
 
 
 export const rootReducer = combineReducers(
     {
-
+        style: styleReducer
     });
