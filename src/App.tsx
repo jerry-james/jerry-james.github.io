@@ -26,9 +26,11 @@ interface Props {
 const AppComponent = (props: Props) => <>
     <div style={props.style}>
         <h2>Navigation</h2>
-        {Object.keys(props.content).map((value, index) => {
-            return <button key={index} onClick={props.onClick}>{value}</button>;
-        })}
+        <div>
+            {Object.keys(props.content).map((value, index) => {
+                return <button key={index} onClick={props.onClick}>{value}</button>;
+            })}
+        </div>
     </div>
     {props.content[props.navigationState]}
 </>;
