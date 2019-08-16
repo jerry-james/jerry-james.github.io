@@ -9,59 +9,47 @@ import {Math} from "./Math"
 
 export type NavigationState = string;
 interface NavigationAction extends Action<string> { target: string };
-const type = 'NAVIGATE';
 
 interface Props {
     style:  React.CSSProperties;
     onClick: (event :React.MouseEvent<HTMLButtonElement>)  => void;
     navigationState: NavigationState;
+    content: {[index: string]: any};
 }
-
-const content : {
-    [index: string]: any
-} = {
-    Home: <Home />,
-    Blog: <Blog />,
-    Math: <Math />
-};
-
-const defaultNavigationState = Object.keys(content)[0];
-
-const MainContent = (props: { navigationState: string }) => content[props.navigationState];
 
 export class NavigationComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
                 <h2>Navigation</h2>
-                {Object.keys(content).map((value, index) => {
-                    return <>
-                        <button key={index} onClick={this.props.onClick}>{value}</button>
-                        <br/>
-                    </>;
-                })}
+                {Object.keys(this.props.content).map((value, index) => {
+                    return <button key={index} onClick={this.props.onClick}>{value}</button>;               })}
             </div>
-            <MainContent navigationState={this.props.navigationState}/>
+            {this.props.content[this.props.navigationState]}
         </>;
     }
 }
 
-
 export const navigationReducer =
-    (state: NavigationState | undefined = defaultNavigationState,
+    (state: NavigationState | undefined = 'Home',
      action: NavigationAction) => {
-    return action.type === type ? action.target : state;
+    return action.type === 'NAVIGATE' ? action.target : state;
 };
+
+function makeAction(target: string): NavigationAction {
+    return {type: 'NAVIGATE', target: target};
+}
 
 function mapStateToProps(state: State) {
     return {
         style: state.style.navigation,
-        navigationState: state.nav.toString()
+        navigationState: state.nav.toString(),
+        content: {
+            Home: <Home/>,
+            Blog: <Blog/>,
+            Math: <Math/>
+        }
     }
-}
-
-function makeAction(target: string): NavigationAction {
-    return {type: type, target: target};
 }
 
 const mapDispatchToProps = (dispatch : any) => {
