@@ -13,7 +13,7 @@ interface NavigationAction extends Action<string> { target: string };
 
 const content = {
     Home: <Home/>,
-    Blog: <Blog/>,
+    Bloard: <Blog/>,
     Math: <Math/>
 };
 

@@ -10,7 +10,7 @@ export class BlogComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
-                <h2>Blog!</h2>
+                <h2>It's not saturday night :/</h2>
             </div>
         </>;
     }
