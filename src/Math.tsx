@@ -11,6 +11,7 @@ export class MathComponent extends React.Component<Props> {
         return <>
             <div style={this.props.style}>
                 <h2>Math!</h2>
+
             </div>
         </>;
     }

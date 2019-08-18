@@ -11,10 +11,28 @@ import './App.css';
 export type NavigationState = string;
 interface NavigationAction extends Action<string> { target: string };
 
-const content = {
-    Home: <Home/>,
-    Bloard: <Blog/>,
-    Math: <Math/>
+const homeContent = {
+    Home: <Home />,
+    Blog: <Blog />,
+    Math: <Math />,
+};
+const blogContent = {
+    Home: <Home />,
+    Blog: <Blog />,
+    Math: <Math />,
+};
+const mathContent = {
+    Home: <Home />,
+    Blog: <Blog />,
+    Math: <Math />,
+};
+
+const contents : {
+    [index:string] : any
+} = {
+    Home: homeContent,
+    Blog: blogContent,
+    Math: mathContent
 };
 
 interface Props {
@@ -25,26 +43,35 @@ interface Props {
 }
 
 
-const AppComponent = (props: Props) => <>
-    <div style={props.style}>
-        <h2 className="title">jerry.fyi</h2>
-        <div className="navigation">
-            {Object.keys(props.content).map((value, index) => {
-                return <button key={index} onClick={props.onClick}>{value}</button>;
-            })}
+const AppComponent = (props: Props) => {
+
+    return <>
+        <div style={props.style}>
+            <h2 className="title">jerry.fyi</h2>
+            <div className="navigation">
+                {Object.keys(props.content)
+                       .map((value, index) => {
+                           return <button key={index}
+                                          onClick={props.onClick}>{value}</button>;
+                       })
+                }
+            </div>
         </div>
-    </div>
-    {props.content[props.navigationState]}
-</>;
+        {
+            props.content[props.navigationState]
+        }
+    </>;
+};
 
 export const navigationReducer =
-    (state: NavigationState | undefined = Object.keys(content)[0],
+    (state: NavigationState | undefined = Object.keys(homeContent)[0],
      action: NavigationAction) : NavigationState => {
         return action.type === 'NAVIGATE' ? action.target : state;
 };
 
 
 function mapStateToProps(state: State) {
+    let content = contents[state.nav];
     return {
         style: state.style.navigation,
         navigationState: state.nav.toString(),

@@ -6,13 +6,30 @@ interface Props {
     style:  React.CSSProperties;
 }
 
-export class HomeComponent extends React.Component<Props> {
+export class HomeComponent extends React.Component<Props, {time: number}> {
+
+    constructor(props : Props) {
+        super(props);
+        this.interval = 0;
+        this.state = {time: 0};
+    }
+
+    timer = () => {
+        this.setState({time: Date.now()});
+    };
+
+    private interval: number;
+
+
+    componentDidMount(): void {
+        this.interval = window.setInterval(this.timer, 500);
+    }
+    componentWillUnmount(): void {
+        window.clearInterval(this.interval)
+    }
+
     render() {
-        return <>
-            <div style={this.props.style}>
-                <h2>Home!</h2>
-            </div>
-        </>;
+        return <div></div>
     }
 }
 
@@ -29,6 +46,6 @@ function mapStateToProps(state: State) {
     }
 }
 
-export const Home = connect(
+export const Home: React.ComponentClass<JSX.LibraryManagedAttributes<HomeComponent, any & {}>> & any & { WrappedComponent: HomeComponent } = connect(
     mapStateToProps,
     mapDispatchToProps)(HomeComponent);
