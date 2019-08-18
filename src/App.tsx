@@ -28,7 +28,7 @@ const mathContent = {
 };
 
 const contents : {
-    [index:string] : any
+    [index:string] : {[index:string] : any}
 } = {
     Home: homeContent,
     Blog: blogContent,
@@ -39,22 +39,20 @@ interface Props {
     style:  React.CSSProperties;
     onClick: (event :React.MouseEvent<HTMLButtonElement>)  => void;
     navigationState: NavigationState;
-    content: {[index: string]: any};
-    mainContent: any;
+    navContent: string[];
+    mainContent: React.Component;
 }
 
-
 const AppComponent = (props: Props) => {
-
     return <>
         <div style={props.style}>
             <h2 className="title">jerry.fyi</h2>
             <div className="navigation">
-                {Object.keys(props.content)
-                       .map((value, index) => {
-                           return <button key={index}
-                                          onClick={props.onClick}>{value}</button>;
-                       })
+                {props.navContent
+                      .map((value, index) => {
+                          return <button key={index}
+                                         onClick={props.onClick}>{value}</button>;
+                      })
                 }
             </div>
         </div>
@@ -75,7 +73,7 @@ function mapStateToProps(state: State) {
     return {
         style: state.style.navigation,
         navigationState: state.nav.toString(),
-        content: contents[state.nav],
+        navContent: Object.keys(contents[state.nav]),
         mainContent: contents[state.nav][state.nav],
     }
 }
