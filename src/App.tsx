@@ -40,6 +40,7 @@ interface Props {
     onClick: (event :React.MouseEvent<HTMLButtonElement>)  => void;
     navigationState: NavigationState;
     content: {[index: string]: any};
+    mainContent: any;
 }
 
 
@@ -58,7 +59,7 @@ const AppComponent = (props: Props) => {
             </div>
         </div>
         {
-            props.content[props.navigationState]
+            props.mainContent
         }
     </>;
 };
@@ -71,11 +72,11 @@ export const navigationReducer =
 
 
 function mapStateToProps(state: State) {
-    let content = contents[state.nav];
     return {
         style: state.style.navigation,
         navigationState: state.nav.toString(),
-        content: content
+        content: contents[state.nav],
+        mainContent: contents[state.nav][state.nav],
     }
 }
 
