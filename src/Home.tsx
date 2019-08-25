@@ -46,6 +46,6 @@ function mapStateToProps(state: State) {
     }
 }
 
-export const Home: React.ComponentClass<JSX.LibraryManagedAttributes<HomeComponent, any & {}>> & any & { WrappedComponent: HomeComponent } = connect(
+export const Home = connect(
     mapStateToProps,
     mapDispatchToProps)(HomeComponent);

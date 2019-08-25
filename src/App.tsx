@@ -6,33 +6,19 @@ import {Home} from "./Home";
 import {Blog} from "./Blog";
 import {Math} from "./Math"
 import './App.css';
+import {Fire} from "./Fire";
 
 
 export type NavigationState = string;
 interface NavigationAction extends Action<string> { target: string };
 
-const homeContent = {
-    Home: <Home />,
-    Blog: <Blog />,
-    Math: <Math />,
-};
-const blogContent = {
-    Home: <Home />,
-    Blog: <Blog />,
-    Math: <Math />,
-};
-const mathContent = {
-    Home: <Home />,
-    Blog: <Blog />,
-    Math: <Math />,
-};
-
 const contents : {
-    [index:string] : {[index:string] : any}
+    [index : string] : any
 } = {
-    Home: homeContent,
-    Blog: blogContent,
-    Math: mathContent
+    Home: <Home />,
+    Blog: <Blog />,
+    Math: <Math />,
+    Fire: <Fire />
 };
 
 interface Props {
@@ -63,7 +49,7 @@ const AppComponent = (props: Props) => {
 };
 
 export const navigationReducer =
-    (state: NavigationState | undefined = Object.keys(homeContent)[0],
+    (state: NavigationState | undefined = Object.keys(contents)[0],
      action: NavigationAction) : NavigationState => {
         return action.type === 'NAVIGATE' ? action.target : state;
 };
@@ -73,8 +59,8 @@ function mapStateToProps(state: State) {
     return {
         style: state.style.navigation,
         navigationState: state.nav.toString(),
-        navContent: Object.keys(contents[state.nav]),
-        mainContent: contents[state.nav][state.nav],
+        navContent: Object.keys(contents),
+        mainContent: contents[state.nav.toString()],
     }
 }
 
