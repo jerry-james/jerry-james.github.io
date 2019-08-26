@@ -4,7 +4,7 @@ import {State} from "./State";
 import {Loader} from "./loader";
 import vshad from "./vshader.glsl";
 import fshad from "./fshader.glsl";
-import {Matrix4} from "./matrix";
+import {Matrix4, Vector3} from "./matrix";
 
 interface Props {
     style: React.CSSProperties;
@@ -68,11 +68,28 @@ export class FireComponent extends React.Component<Props> {
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
             gl.uniform4fv(u_Color, new Float32Array([1.0, 0.0, 0.0, 1.0]));
 
+            let v0 = new Vector3(0.0, 0.0, 0.0);
+            let v1 = new Vector3(Math.cos(1*(Math.PI/3)), Math.sin(1*(Math.PI/3)), 0.0);
+            let v2 = new Vector3(Math.cos(2*(Math.PI/3)), Math.sin(2*(Math.PI/3)), 0.0);
+            let v3 = new Vector3(Math.cos(3*(Math.PI/3)), Math.sin(3*(Math.PI/3)), 0.0);
+            let v4 = new Vector3(Math.cos(4*(Math.PI/3)), Math.sin(4*(Math.PI/3)), 0.0);
+            let v5 = new Vector3(Math.cos(5*(Math.PI/3)), Math.sin(5*(Math.PI/3)), 0.0);
+            let v6 = new Vector3(Math.cos(6*(Math.PI/3)), Math.sin(6*(Math.PI/3)), 0.0);
+            let v7 = new Vector3(Math.cos(7*(Math.PI/3)), Math.sin(7*(Math.PI/3)), 0.0);
+
+
 
             let vertices = new Float32Array(
                 [
-                    0.0,0.0,0.0,
-                    0.25, 0.25,0.0]);
+                    ...v0.elements(),
+                    ...v1.elements(),
+                    ...v2.elements(),
+                    ...v3.elements(),
+                    ...v4.elements(),
+                    ...v5.elements(),
+                    ...v6.elements(),
+                    ...v7.elements()
+                ]);
             let vertexBuffer = gl.createBuffer();
 
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -81,7 +98,7 @@ export class FireComponent extends React.Component<Props> {
             gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(a_Position);
 
-            gl.drawArrays(gl.LINES, 0, 2);
+            gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
 
         }
     }
