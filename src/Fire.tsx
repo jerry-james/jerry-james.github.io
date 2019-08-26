@@ -51,13 +51,13 @@ export class FireComponent extends React.Component<Props> {
 
             viewMatrix.setLookAt(0.0,
                                  0.0,
-                                 0.250,
+                                 10.00,
                                  0, 0, 0,
                                  0 , 1, 0);
-
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
 
-            let modelMatrix = new Matrix4().setIdentity();
+            let modelMatrix = new Matrix4();
+            modelMatrix.translate(0,0,-2);
 
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
 
