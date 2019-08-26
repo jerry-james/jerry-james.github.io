@@ -68,7 +68,7 @@ export class FireComponent extends React.Component<Props> {
         let modelMatrix = new Matrix4();
 
         let projMatrix = new Matrix4();
-        projMatrix.setPerspective(30, 640.0/480.0, 1, 100);
+        projMatrix.setPerspective(30, 640.0/480.0, 1, 1000);
 
         if(this.gl && this._loader.program) {
             let gl = this.gl;
@@ -84,10 +84,30 @@ export class FireComponent extends React.Component<Props> {
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
 
             modelMatrix.translate(0,0,-2);
+            if(u_modelMatrix) {
+                this.extracted(gl, u_modelMatrix, modelMatrix, vertices,
+                               new Float32Array([1.0, 0.0, 0.0, 1.0]));
+                modelMatrix.translate(1.5,Math.sqrt(3/4),0);
+                this.extracted(gl, u_modelMatrix, modelMatrix, vertices,
+                               new Float32Array([0.0, 1.0, 0.0, 1.0]));
+                modelMatrix.setIdentity();
+                modelMatrix.translate(1.5,-Math.sqrt(3/4),-2);
+                this.extracted(gl, u_modelMatrix, modelMatrix, vertices,
+                               new Float32Array([0.50, 0.50, 0.50, 1.0]));
+            }
+
+        }
+    }
+
+    private extracted(gl : WebGLRenderingContext,
+                      u_modelMatrix :WebGLUniformLocation,
+                      modelMatrix :Matrix4,
+                      vertices: Float32Array, float32Array: Float32Array) {
+        if(this._loader.program) {
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
 
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
-            gl.uniform4fv(u_Color, new Float32Array([1.0, 0.0, 0.0, 1.0]));
+            gl.uniform4fv(u_Color, float32Array);
 
             let vertexBuffer = gl.createBuffer();
 
@@ -98,7 +118,6 @@ export class FireComponent extends React.Component<Props> {
             gl.enableVertexAttribArray(a_Position);
 
             gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
-
         }
     }
 
