@@ -38,58 +38,57 @@ export class FireComponent extends React.Component<Props> {
     }
 
     renderWebgl() {
+        let v0 = new Vector3(0.0, 0.0, 0.0);
+        let v1 = new Vector3(Math.cos(1*(Math.PI/3)), Math.sin(1*(Math.PI/3)), 0.0);
+        let v2 = new Vector3(Math.cos(2*(Math.PI/3)), Math.sin(2*(Math.PI/3)), 0.0);
+        let v3 = new Vector3(Math.cos(3*(Math.PI/3)), Math.sin(3*(Math.PI/3)), 0.0);
+        let v4 = new Vector3(Math.cos(4*(Math.PI/3)), Math.sin(4*(Math.PI/3)), 0.0);
+        let v5 = new Vector3(Math.cos(5*(Math.PI/3)), Math.sin(5*(Math.PI/3)), 0.0);
+        let v6 = new Vector3(Math.cos(6*(Math.PI/3)), Math.sin(6*(Math.PI/3)), 0.0);
+        let v7 = new Vector3(Math.cos(7*(Math.PI/3)), Math.sin(7*(Math.PI/3)), 0.0);
+
+        let vertices = new Float32Array(
+            [
+                ...v0.elements(),
+                ...v1.elements(),
+                ...v2.elements(),
+                ...v3.elements(),
+                ...v4.elements(),
+                ...v5.elements(),
+                ...v6.elements(),
+                ...v7.elements()
+            ]);
+        let viewMatrix = new Matrix4();
+        viewMatrix.setLookAt(0.0,
+                             0.0,
+                             10.00,
+                             0, 0, 0,
+                             0 , 1, 0);
+
+        let modelMatrix = new Matrix4();
+
+        let projMatrix = new Matrix4();
+        projMatrix.setPerspective(30, 640.0/480.0, 1, 100);
+
         if(this.gl && this._loader.program) {
             let gl = this.gl;
             gl.enable(gl.DEPTH_TEST);
             gl.clear(gl.DEPTH_BUFFER_BIT);
             gl.clearColor(1.0, 1.0, 1.0, 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT);
+
             let u_modelMatrix = gl.getUniformLocation(this._loader.program, 'u_ModelMatrix');
             let u_viewMatrix = gl.getUniformLocation(this._loader.program, 'u_ViewMatrix');
             let u_projMatrix = gl.getUniformLocation(this._loader.program, 'u_ProjMatrix');
-            let viewMatrix = new Matrix4();
-
-            viewMatrix.setLookAt(0.0,
-                                 0.0,
-                                 10.00,
-                                 0, 0, 0,
-                                 0 , 1, 0);
+            gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
 
-            let modelMatrix = new Matrix4();
             modelMatrix.translate(0,0,-2);
-
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
-
-            let projMatrix = new Matrix4();
-            projMatrix.setPerspective(30, 640.0/480.0, 1, 100);
-            gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
 
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
             gl.uniform4fv(u_Color, new Float32Array([1.0, 0.0, 0.0, 1.0]));
 
-            let v0 = new Vector3(0.0, 0.0, 0.0);
-            let v1 = new Vector3(Math.cos(1*(Math.PI/3)), Math.sin(1*(Math.PI/3)), 0.0);
-            let v2 = new Vector3(Math.cos(2*(Math.PI/3)), Math.sin(2*(Math.PI/3)), 0.0);
-            let v3 = new Vector3(Math.cos(3*(Math.PI/3)), Math.sin(3*(Math.PI/3)), 0.0);
-            let v4 = new Vector3(Math.cos(4*(Math.PI/3)), Math.sin(4*(Math.PI/3)), 0.0);
-            let v5 = new Vector3(Math.cos(5*(Math.PI/3)), Math.sin(5*(Math.PI/3)), 0.0);
-            let v6 = new Vector3(Math.cos(6*(Math.PI/3)), Math.sin(6*(Math.PI/3)), 0.0);
-            let v7 = new Vector3(Math.cos(7*(Math.PI/3)), Math.sin(7*(Math.PI/3)), 0.0);
-
-
-
-            let vertices = new Float32Array(
-                [
-                    ...v0.elements(),
-                    ...v1.elements(),
-                    ...v2.elements(),
-                    ...v3.elements(),
-                    ...v4.elements(),
-                    ...v5.elements(),
-                    ...v6.elements(),
-                    ...v7.elements()
-                ]);
             let vertexBuffer = gl.createBuffer();
 
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
