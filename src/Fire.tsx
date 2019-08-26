@@ -61,7 +61,7 @@ export class FireComponent extends React.Component<Props> {
         let viewMatrix = new Matrix4();
         viewMatrix.setLookAt(0.0,
                              0.0,
-                             10.00,
+                             50.00,
                              0, 0, 0,
                              0 , 1, 0);
 
@@ -88,6 +88,13 @@ export class FireComponent extends React.Component<Props> {
 
             let DELTA_X = 1.5;
             let DELTA_Y = Math.sqrt(3/4);
+
+            let vertexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
+            gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(a_Position);
 
             if(u_modelMatrix) {
                 modelMatrix.setIdentity();
@@ -138,18 +145,8 @@ export class FireComponent extends React.Component<Props> {
                       vertices: Float32Array, float32Array: Float32Array) {
         if(this._loader.program) {
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
-
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
             gl.uniform4fv(u_Color, float32Array);
-
-            let vertexBuffer = gl.createBuffer();
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-            let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
-            gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(a_Position);
-
             gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
         }
     }
