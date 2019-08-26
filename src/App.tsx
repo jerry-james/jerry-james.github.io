@@ -15,10 +15,10 @@ interface NavigationAction extends Action<string> { target: string };
 const contents : {
     [index : string] : any
 } = {
+    Fire: <Fire />,
     Home: <Home />,
     Blog: <Blog />,
-    Math: <Math />,
-    Fire: <Fire />
+    Math: <Math />
 };
 
 interface Props {
