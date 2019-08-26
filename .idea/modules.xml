@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/jerry.fyi.iml" filepath="$PROJECT_DIR$/.idea/jerry.fyi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../webgl/.idea/webgl.iml" filepath="$PROJECT_DIR$/../webgl/.idea/webgl.iml" />
     </modules>
   </component>
 </project>
