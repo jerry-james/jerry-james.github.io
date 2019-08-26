@@ -65,7 +65,7 @@ export class FireComponent extends React.Component<Props> {
                              0, 0, 0,
                              0 , 1, 0);
 
-        let modelMatrix = new Matrix4();
+
 
         let projMatrix = new Matrix4();
         projMatrix.setPerspective(30, 640.0/480.0, 1, 1000);
@@ -86,8 +86,12 @@ export class FireComponent extends React.Component<Props> {
             gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
 
-            let DELTA_X1 = new Vector3(-1.5, Math.sqrt(3/4), 0.0);
-            let DELTA_X2 = new Vector3(+1.5, Math.sqrt(3/4), 0.0);
+            let HEX_BASIS = new Matrix4().set(new Float32Array(
+                [
+                    -1.5,Math.sqrt(3/4),0,0,
+                    +1.5,Math.sqrt(3/4),0,0,
+                    0,0,1,0,
+                    0,0,0,1]));
 
             let vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -95,42 +99,64 @@ export class FireComponent extends React.Component<Props> {
             let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
             gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(a_Position);
-            let d = null;
 
             if(u_modelMatrix) {
-                modelMatrix.setIdentity();
-                modelMatrix.translate(0,0,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 0.0, 1.0]));
+                {
+                    let position = new Vector3(0, 0, 0);
+                    let color = [1.0, 0.0, 0.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(0).add(DELTA_X2.muls(1));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 0.0, 1.0]));
+                {
+                    let position = new Vector3(0, 1, 0);
+                    let color = [0.0, 1.0, 0.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(-1).add(DELTA_X2.muls(0));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 0.0, 1.0, 1.0]));
+                {
+                    let position = new Vector3(-1, 0, 0);
+                    let color = [0.0, 0.0, 1.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(-1).add(DELTA_X2.muls(-1));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.5, 0.2, 0.5, 1.0]));
+                {
+                    let position = new Vector3(-1, -1, 0);
+                    let color = [0.5, 0.2, 0.5, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(0).add(DELTA_X2.muls(-1));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 1.0, 1.0]));
+                {
+                    let position = new Vector3(0, -1, 0);
+                    let color = [0.0, 1.0, 1.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(1).add(DELTA_X2.muls(0));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 1.0, 1.0]));
+                {
+                    let position = new Vector3(1, 0, 0);
+                    let color = [1.0, 0.0, 1.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
 
-                modelMatrix.setIdentity();
-                d = DELTA_X1.muls(1).add(DELTA_X2.muls(1));
-                modelMatrix.translate(d.x, d.y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 1.0, 0.0, 1.0]));
+                {
+                    let position = new Vector3(1, 1, 0);
+                    let color = [1.0, 1.0, 0.0, 1.0];
+                    let translation = HEX_BASIS.mulv3(position);
+                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
+                }
+
 
 
             }

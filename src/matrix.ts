@@ -11,6 +11,22 @@ export class Matrix4 {
         this._elements = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
     }
 
+    public set(src : Float32Array) : Matrix4{
+        let i, s, d;
+
+        s = src;
+        d = this.elements;
+
+        if (s === d) {
+            return this;
+        }
+
+        for (i = 0; i < 16; ++i) {
+            d[i] = s[i];
+        }
+        return this;
+    };
+
     // noinspection JSUnusedGlobalSymbols
     public setIdentity() : Matrix4 {
         let e = this._elements;
@@ -271,7 +287,9 @@ export class Vector3 {
     }
 
     public muls(scalar : number) : Vector3 {
-        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
+        return new Vector3(this.x * scalar,
+                           this.y * scalar,
+                           this.z * scalar);
     }
 
     public cross(other : Vector3) {
@@ -317,22 +335,7 @@ export class Vector3 {
 //  * @param src source matrix
 //  * @return this
 //  */
-// Matrix4.prototype.set = function(src) {
-//     var i, s, d;
-//
-//     s = src.elements;
-//     d = this.elements;
-//
-//     if (s === d) {
-//         return;
-//     }
-//
-//     for (i = 0; i < 16; ++i) {
-//         d[i] = s[i];
-//     }
-//
-//     return this;
-// };
+
 //
 // /**
 //  * Multiply the matrix from the right.
