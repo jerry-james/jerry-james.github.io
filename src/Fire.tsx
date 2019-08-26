@@ -86,8 +86,8 @@ export class FireComponent extends React.Component<Props> {
             gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
 
-            let DELTA_X = 1.5;
-            let DELTA_Y = Math.sqrt(3/4);
+            let DELTA_X1 = new Vector3(-1.5, Math.sqrt(3/4), 0.0);
+            let DELTA_X2 = new Vector3(+1.5, Math.sqrt(3/4), 0.0);
 
             let vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -95,6 +95,7 @@ export class FireComponent extends React.Component<Props> {
             let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
             gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(a_Position);
+            let d = null;
 
             if(u_modelMatrix) {
                 modelMatrix.setIdentity();
@@ -102,28 +103,33 @@ export class FireComponent extends React.Component<Props> {
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 0.0, 1.0]));
 
                 modelMatrix.setIdentity();
-                modelMatrix.translate(DELTA_X, DELTA_Y, -2);
+                d = DELTA_X1.muls(0).add(DELTA_X2.muls(1));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 0.0, 1.0]));
 
                 modelMatrix.setIdentity();
-                modelMatrix.translate(DELTA_X,-DELTA_Y,-2);
+                d = DELTA_X1.muls(-1).add(DELTA_X2.muls(0));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 0.0, 1.0, 1.0]));
 
-
                 modelMatrix.setIdentity();
-                modelMatrix.translate(0,-2*DELTA_Y,-2);
+                d = DELTA_X1.muls(-1).add(DELTA_X2.muls(-1));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.5, 0.2, 0.5, 1.0]));
 
                 modelMatrix.setIdentity();
-                modelMatrix.translate(-DELTA_X,-DELTA_Y,-2);
+                d = DELTA_X1.muls(0).add(DELTA_X2.muls(-1));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 1.0, 1.0]));
 
                 modelMatrix.setIdentity();
-                modelMatrix.translate(-DELTA_X,+DELTA_Y,-2);
+                d = DELTA_X1.muls(1).add(DELTA_X2.muls(0));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 1.0, 1.0]));
 
                 modelMatrix.setIdentity();
-                modelMatrix.translate(0,+2*DELTA_Y,-2);
+                d = DELTA_X1.muls(1).add(DELTA_X2.muls(1));
+                modelMatrix.translate(d.x, d.y, -2);
                 this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 1.0, 0.0, 1.0]));
 
 

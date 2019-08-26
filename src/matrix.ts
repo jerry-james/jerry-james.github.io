@@ -250,6 +250,14 @@ export class Vector3 {
         return new Vector3(x, y, z);
     }
 
+    // noinspection JSUnusedGlobalSymbols
+    public add(other : Vector3) : Vector3 {
+        let x = this.x + other.x;
+        let y = this.y + other.y;
+        let z = this.z + other.z;
+        return new Vector3(x, y, z);
+    }
+
     public normalize() : Vector3 {
         let x = this.x;
         let y = this.y;
@@ -260,6 +268,10 @@ export class Vector3 {
         } else {
             return new Vector3(x / d, y / d, z / d);
         }
+    }
+
+    public muls(scalar : number) : Vector3 {
+        return new Vector3(this.x * scalar, this.y * scalar, this.z * scalar);
     }
 
     public cross(other : Vector3) {
