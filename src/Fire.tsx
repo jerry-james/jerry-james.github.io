@@ -99,39 +99,32 @@ export class FireComponent extends React.Component<Props> {
             if(u_modelMatrix) {
                 modelMatrix.setIdentity();
                 modelMatrix.translate(0,0,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([1.0, 0.0, 0.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 0.0, 1.0]));
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(DELTA_X, DELTA_Y, -2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([0.0, 1.0, 0.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 0.0, 1.0]));
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(DELTA_X,-DELTA_Y,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([0.0, 0.0, 1.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 0.0, 1.0, 1.0]));
 
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(0,-2*DELTA_Y,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                                       new Float32Array([0.5, 0.2, 0.5, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.5, 0.2, 0.5, 1.0]));
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(-DELTA_X,-DELTA_Y,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([0.0, 1.0, 1.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([0.0, 1.0, 1.0, 1.0]));
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(-DELTA_X,+DELTA_Y,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([1.0, 0.0, 1.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 0.0, 1.0, 1.0]));
 
                 modelMatrix.setIdentity();
                 modelMatrix.translate(0,+2*DELTA_Y,-2);
-                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, vertices,
-                               new Float32Array([1.0, 1.0, 0.0, 1.0]));
+                this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array([1.0, 1.0, 0.0, 1.0]));
 
 
             }
@@ -139,10 +132,10 @@ export class FireComponent extends React.Component<Props> {
         }
     }
 
-    private renderHexagonCell(gl : WebGLRenderingContext,
-                      u_modelMatrix :WebGLUniformLocation,
-                      modelMatrix :Matrix4,
-                      vertices: Float32Array, float32Array: Float32Array) {
+    private renderHexagonCell(gl: WebGLRenderingContext,
+                              u_modelMatrix: WebGLUniformLocation,
+                              modelMatrix: Matrix4,
+                              float32Array: Float32Array) {
         if(this._loader.program) {
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
