@@ -68,7 +68,7 @@ export class FireComponent extends React.Component<Props> {
         let viewMatrix = new Matrix4();
         viewMatrix.setLookAt(0.0,
                              0.0,
-                             200.00,
+                             250.00,
                              0, 0, 0,
                              0 , 1, 0);
 
