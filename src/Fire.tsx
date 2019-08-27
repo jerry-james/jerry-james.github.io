@@ -101,77 +101,35 @@ export class FireComponent extends React.Component<Props> {
             gl.enableVertexAttribArray(a_Position);
 
             if(u_modelMatrix) {
-                {
-                    let position = new Vector3(0, 0, 0);
-                    let color = [1.0, 0.0, 0.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
 
-                {
-                    let position = new Vector3(0, 1, 0);
-                    let color = [0.0, 1.0, 0.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-                {
-                    let position = new Vector3(-1, 0, 0);
-                    let color = [0.0, 0.0, 1.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-                {
-                    let position = new Vector3(-1, -1, 0);
-                    let color = [0.5, 0.2, 0.5, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-                {
-                    let position = new Vector3(0, -1, 0);
-                    let color = [0.0, 1.0, 1.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-                {
-                    let position = new Vector3(1, 0, 0);
-                    let color = [1.0, 0.0, 1.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-                {
-                    let position = new Vector3(1, 1, 0);
-                    let color = [1.0, 1.0, 0.0, 1.0];
-                    let translation = HEX_BASIS.mulv3(position);
-                    let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-                    this.renderHexagonCell(gl, u_modelMatrix, modelMatrix, new Float32Array(color));
-                }
-
-
+                this.renderHexagonCell(HEX_BASIS, new Vector3(0, 0, 0), gl, u_modelMatrix,
+                               [1.0, 0.0, 0.0, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(0, 1, 0), gl, u_modelMatrix,
+                               [0.0, 1.0, 0.0, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(-1, 0, 0), gl, u_modelMatrix,
+                               [0.0, 0.0, 1.0, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(-1, -1, 0), gl, u_modelMatrix,
+                               [0.5, 0.2, 0.5, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(0, -1, 0), gl, u_modelMatrix,
+                               [0.0, 1.0, 1.0, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(1, 0, 0), gl, u_modelMatrix,
+                               [1.0, 0.0, 1.0, 1.0]);
+                this.renderHexagonCell(HEX_BASIS, new Vector3(1, 1, 0), gl, u_modelMatrix,
+                               [1.0, 1.0, 0.0, 1.0]);
 
             }
 
         }
     }
 
-    private renderHexagonCell(gl: WebGLRenderingContext,
-                              u_modelMatrix: WebGLUniformLocation,
-                              modelMatrix: Matrix4,
-                              float32Array: Float32Array) {
-        if(this._loader.program) {
+    private renderHexagonCell(HEX_BASIS : Matrix4, position : Vector3, gl : WebGLRenderingContext,
+                      u_modelMatrix : WebGLUniformLocation, color : number[]) {
+        let translation = HEX_BASIS.mulv3(position);
+        let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
+        if (this._loader.program) {
             gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
             let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
-            gl.uniform4fv(u_Color, float32Array);
+            gl.uniform4fv(u_Color, new Float32Array(color));
             gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
         }
     }
