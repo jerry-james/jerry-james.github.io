@@ -9,6 +9,7 @@ import {Hexagon} from "./Hexagon";
 
 interface Props {
     style: React.CSSProperties;
+    hexagons: Hexagon[]
 }
 
 export class FireComponent extends React.Component<Props> {
@@ -101,17 +102,9 @@ export class FireComponent extends React.Component<Props> {
             gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(a_Position);
 
-            let hexagons : Hexagon[] = [
-                new Hexagon(0, 0  ,[1.0, 0.0, 0.0, 1.0]),
-                new Hexagon(0, 1  ,[0.0, 1.0, 0.0, 1.0]),
-                new Hexagon(-1, 0 ,[0.0, 0.0, 1.0, 1.0]),
-                new Hexagon(-1, -1,[0.5, 0.2, 0.5, 1.0]),
-                new Hexagon(0, -1 ,[0.0, 1.0, 1.0, 1.0]),
-                new Hexagon(1, 0  ,[1.0, 0.0, 1.0, 1.0]),
-                new Hexagon(1, 1  ,[1.0, 1.0, 0.0, 1.0]),
-            ];
+
             if(u_modelMatrix  && this._loader.program) {
-                for(let h of hexagons) {
+                for(let h of this.props.hexagons) {
                     let modelMatrix = new Matrix4()
                         .translatev3(HEX_BASIS.mulv3(new Vector3(h.x1, h.x2, -2)));
                     gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
@@ -142,7 +135,17 @@ function mapDispatchToProps() {
 
 
 function mapStateToProps(state: State) {
+    let hexagons : Hexagon[] = [
+        new Hexagon(0, 0  ,[1.0, 0.0, 0.0, 1.0]),
+        new Hexagon(0, 1  ,[0.0, 1.0, 0.0, 1.0]),
+        new Hexagon(-1, 0 ,[0.0, 0.0, 1.0, 1.0]),
+        new Hexagon(-1, -1,[0.5, 0.2, 0.5, 1.0]),
+        new Hexagon(0, -1 ,[0.0, 1.0, 1.0, 1.0]),
+        new Hexagon(1, 0  ,[1.0, 0.0, 1.0, 1.0]),
+        new Hexagon(1, 1  ,[1.0, 1.0, 0.0, 1.0]),
+    ];
     return {
+        hexagons: hexagons,
         style: state.style.main
     }
 }
