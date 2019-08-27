@@ -58,6 +58,10 @@ export class Matrix4 {
     }
 
     // noinspection JSUnusedGlobalSymbols
+    public translatev3(v : Vector3) : Matrix4 {
+        return this.translate(v.x, v.y, v.z);
+    }
+    // noinspection JSUnusedGlobalSymbols
     public setRotate(angle : number, x : number, y : number, z : number) : Matrix4 {
         let e, s, c, len, rlen, nc, xy, yz, zx, xs, ys, zs;
 

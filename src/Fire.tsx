@@ -112,26 +112,19 @@ export class FireComponent extends React.Component<Props> {
             ];
             if(u_modelMatrix) {
                 for(let h of hexagons) {
-                    this.renderHexagonCell(HEX_BASIS, new Vector3(h.x1, h.x2, 0),gl, u_modelMatrix,
-                                           h.color);
+                    let modelMatrix = new Matrix4()
+                        .translatev3(HEX_BASIS.mulv3(new Vector3(h.x1, h.x2, -2)));
+                    if (this._loader.program) {
+                        gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
+                        let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
+                        gl.uniform4fv(u_Color, new Float32Array(h.color));
+                        gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
+                    }
                 }
             }
 
         }
     }
-
-    private renderHexagonCell(HEX_BASIS : Matrix4, position : Vector3, gl : WebGLRenderingContext,
-                      u_modelMatrix : WebGLUniformLocation, color : number[]) {
-        let translation = HEX_BASIS.mulv3(position);
-        let modelMatrix = new Matrix4().translate(translation.x, translation.y, -2);
-        if (this._loader.program) {
-            gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
-            let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
-            gl.uniform4fv(u_Color, new Float32Array(color));
-            gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
-        }
-    }
-
     render() {
 
         return <>
