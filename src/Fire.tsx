@@ -108,7 +108,7 @@ export class FireComponent extends React.Component<Props> {
             gl.enableVertexAttribArray(a_Position);
 
 
-            if(u_modelMatrix  && this._loader.program) {
+            if(u_modelMatrix) {
                 for(let h of this.props.hexagons) {
                     let modelMatrix = new Matrix4()
                         .translatev3(HEX_BASIS.mulv3(new Vector3(h.x1, h.x2, -2)));
