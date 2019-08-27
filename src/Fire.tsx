@@ -5,6 +5,7 @@ import {Loader} from "./loader";
 import vshad from "./vshader.glsl";
 import fshad from "./fshader.glsl";
 import {Matrix4, Vector3} from "./matrix";
+import {Hexagon} from "./Hexagon";
 
 interface Props {
     style: React.CSSProperties;
@@ -100,23 +101,20 @@ export class FireComponent extends React.Component<Props> {
             gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(a_Position);
 
+            let hexagons : Hexagon[] = [
+                new Hexagon(0, 0  ,[1.0, 0.0, 0.0, 1.0]),
+                new Hexagon(0, 1  ,[0.0, 1.0, 0.0, 1.0]),
+                new Hexagon(-1, 0 ,[0.0, 0.0, 1.0, 1.0]),
+                new Hexagon(-1, -1,[0.5, 0.2, 0.5, 1.0]),
+                new Hexagon(0, -1 ,[0.0, 1.0, 1.0, 1.0]),
+                new Hexagon(1, 0  ,[1.0, 0.0, 1.0, 1.0]),
+                new Hexagon(1, 1  ,[1.0, 1.0, 0.0, 1.0]),
+            ];
             if(u_modelMatrix) {
-
-                this.renderHexagonCell(HEX_BASIS, new Vector3(0, 0, 0), gl, u_modelMatrix,
-                               [1.0, 0.0, 0.0, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(0, 1, 0), gl, u_modelMatrix,
-                               [0.0, 1.0, 0.0, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(-1, 0, 0), gl, u_modelMatrix,
-                               [0.0, 0.0, 1.0, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(-1, -1, 0), gl, u_modelMatrix,
-                               [0.5, 0.2, 0.5, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(0, -1, 0), gl, u_modelMatrix,
-                               [0.0, 1.0, 1.0, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(1, 0, 0), gl, u_modelMatrix,
-                               [1.0, 0.0, 1.0, 1.0]);
-                this.renderHexagonCell(HEX_BASIS, new Vector3(1, 1, 0), gl, u_modelMatrix,
-                               [1.0, 1.0, 0.0, 1.0]);
-
+                for(let h of hexagons) {
+                    this.renderHexagonCell(HEX_BASIS, new Vector3(h.x1, h.x2, 0),gl, u_modelMatrix,
+                                           h.color);
+                }
             }
 
         }
