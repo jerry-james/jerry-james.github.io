@@ -17,6 +17,7 @@ export class FireComponent extends React.Component<Props> {
     private gl: WebGLRenderingContext | null;
     private readonly _loader: Loader;
 
+
     constructor(props : Props) {
         super(props);
         this.canvas = React.createRef();
@@ -37,6 +38,10 @@ export class FireComponent extends React.Component<Props> {
 
             }
         }
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+        this.renderWebgl()
     }
 
     renderWebgl() {
@@ -63,14 +68,14 @@ export class FireComponent extends React.Component<Props> {
         let viewMatrix = new Matrix4();
         viewMatrix.setLookAt(0.0,
                              0.0,
-                             50.00,
+                             200.00,
                              0, 0, 0,
                              0 , 1, 0);
 
 
 
         let projMatrix = new Matrix4();
-        projMatrix.setPerspective(30, 640.0/480.0, 1, 1000);
+        projMatrix.setPerspective(30, 1980/1080, 1, 1000);
 
         if(this.gl && this._loader.program) {
             let gl = this.gl;
@@ -83,7 +88,7 @@ export class FireComponent extends React.Component<Props> {
             let u_viewMatrix = gl.getUniformLocation(this._loader.program, 'u_ViewMatrix');
             let u_projMatrix = gl.getUniformLocation(this._loader.program, 'u_ProjMatrix');
 
-            //viewMatrix.rotate(30,0,0,1);
+            viewMatrix.rotate(30,0,0,1);
 
             gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
             gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
@@ -120,8 +125,8 @@ export class FireComponent extends React.Component<Props> {
 
         return <>
             <div style={this.props.style}>
-                <canvas width="640"
-                        height="480"
+                <canvas width="1980"
+                        height="1080"
                         ref={this.canvas}/>
             </div>
         </>;
@@ -135,15 +140,10 @@ function mapDispatchToProps() {
 
 
 function mapStateToProps(state: State) {
-    let hexagons : Hexagon[] = [
-        new Hexagon(0, 0  ,[1.0, 0.0, 0.0, 1.0]),
-        new Hexagon(0, 1  ,[0.0, 1.0, 0.0, 1.0]),
-        new Hexagon(-1, 0 ,[0.0, 0.0, 1.0, 1.0]),
-        new Hexagon(-1, -1,[0.5, 0.2, 0.5, 1.0]),
-        new Hexagon(0, -1 ,[0.0, 1.0, 1.0, 1.0]),
-        new Hexagon(1, 0  ,[1.0, 0.0, 1.0, 1.0]),
-        new Hexagon(1, 1  ,[1.0, 1.0, 0.0, 1.0]),
-    ];
+    let hexagons : Hexagon[] = [];
+    for(let i = -100; i < 100; i++)
+        for(let j = -100; j < 100; j++)
+            hexagons.push(new Hexagon(i, j, [Math.random(), Math.random(), Math.random(), 1.0]));
     return {
         hexagons: hexagons,
         style: state.style.main
