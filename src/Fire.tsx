@@ -114,12 +114,12 @@ export class FireComponent extends React.Component<Props> {
                 for(let h of hexagons) {
                     let modelMatrix = new Matrix4()
                         .translatev3(HEX_BASIS.mulv3(new Vector3(h.x1, h.x2, -2)));
+                    gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
                     if (this._loader.program) {
-                        gl.uniformMatrix4fv(u_modelMatrix, false, modelMatrix.elements);
                         let u_Color = gl.getUniformLocation(this._loader.program, 'u_Color');
                         gl.uniform4fv(u_Color, new Float32Array(h.color));
-                        gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
                     }
+                    gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
                 }
             }
 
