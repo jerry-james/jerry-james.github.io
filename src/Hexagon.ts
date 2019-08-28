@@ -1,3 +1,11 @@
+import { Action } from "redux";
+
+export type HexagonState = Hexagon[];
+
+export const hexagonsReducer = (state : HexagonState | undefined = [],
+                                action: Action<string>) : HexagonState => {
+    return state;
+}
 
 export class Hexagon {
     private readonly _x1 : number;
