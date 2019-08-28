@@ -3,8 +3,8 @@ import { Action } from "redux";
 export type HexagonState = Hexagon[];
 
 let hexagons : Hexagon[] = [];
-let MAX_X1 = 44;
-let MAX_X2 = 50;
+let MAX_X1 = 100;
+let MAX_X2 = 100;
 let pLiving = 0.5;
 let pBurning = 0.98;
 for(let i = 0; i < MAX_X1; i++)  {
@@ -55,7 +55,54 @@ function reset() {
 }
 
 function step(state: HexagonState) : HexagonState {
-    return state;
+    let h : HexagonState = [];
+    for (let i = 0; i < MAX_X1; i++) {
+        for (let j = 0; j < MAX_X2; j++) {
+            let hprev = state[i * MAX_X2 + j];
+            if(hprev.state === 'BURNING') {
+                h[i * MAX_X2 + j] = {
+                    x1: i, x2: j,
+                    color: [0.3, 0.3, 0.3, 1.0],
+                    state: 'DEAD'
+                };
+            } else if(hprev.state === 'DEAD') {
+                h[i * MAX_X2 + j] = {
+                    x1: i, x2: j,
+                    color: [0.3, 0.3, 0.3, 1.0],
+                    state: 'DEAD'
+                };
+            } else if(hprev.state === 'LIVING') {
+                let n0 = state[(i + 0) * MAX_X2 + (j + 1)];
+                let n1 = state[(i + 0) * MAX_X2 + (j - 1)];
+                let n2 = state[(i + 1) * MAX_X2 + (j + 0)];
+                let n3 = state[(i - 1) * MAX_X2 + (j + 0)];
+                let n4 = state[(i + 1) * MAX_X2 + (j + 1)];
+                let n5 = state[(i - 1) * MAX_X2 + (j - 1)];
+                let nn = [n0,n1,n2,n3,n4,n5];
+                let isBurning = nn.filter((value, index) => {
+                    if(value)
+                        return value.state === 'BURNING';
+                    else
+                        return false;
+                }).length != 0;
+                if(isBurning) {
+                    h[i * MAX_X2 + j] = {
+                        x1: i, x2: j,
+                        color: [1.0, 0.0, 0.0, 1.0],
+                        state: 'BURNING'
+                    };
+                } else {
+                    h[i * MAX_X2 + j] = {
+                        x1: i, x2: j,
+                        color: [0.0, 1.0, 0.0, 1.0],
+                        state: 'LIVING'
+                    };
+                }
+            }
+
+        }
+    }
+    return h;
 }
 
 export const hexagonsReducer = (state : HexagonState | undefined = hexagons,
@@ -68,7 +115,7 @@ export const hexagonsReducer = (state : HexagonState | undefined = hexagons,
         return state;
     }
 
-}
+};
 
 export interface Hexagon {
     x1 : number;

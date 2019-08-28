@@ -8,17 +8,19 @@ import {Matrix4, Vector3} from "./matrix";
 import {Hexagon} from "./Hexagon";
 
 let WIDTH = 800;
-let HEIGHT = 600;
+let HEIGHT = 800;
 interface Props {
     style: React.CSSProperties;
     hexagons: Hexagon[];
     reset: () => void;
+    step: () => void;
 }
 
 export class FireComponent extends React.Component<Props> {
     private readonly canvas: React.RefObject<HTMLCanvasElement>;
     private gl: WebGLRenderingContext | null;
     private readonly _loader: Loader;
+    private interval: number | undefined;
 
 
     constructor(props : Props) {
@@ -28,7 +30,12 @@ export class FireComponent extends React.Component<Props> {
         this._loader = new Loader();
     }
 
+    intervalHandler = () => {
+        this.props.step();
+    };
+
     componentDidMount(): void {
+        this.interval = window.setInterval(this.intervalHandler, 200);
         if(this.canvas.current) {
             this.gl = this.canvas.current.getContext("webgl");
             if(this.gl) {
@@ -49,6 +56,10 @@ export class FireComponent extends React.Component<Props> {
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
         this.renderWebgl();
+    }
+
+    componentWillUnmount(): void {
+        window.clearInterval(this.interval)
     }
 
     renderWebgl() {
@@ -73,10 +84,12 @@ export class FireComponent extends React.Component<Props> {
                 ...v7.elements()
             ]);
         let viewMatrix = new Matrix4();
-        viewMatrix.setLookAt(0.0,
-                             25.0,
+        let yy = 50;
+        let xx = -45;
+        viewMatrix.setLookAt(xx,
+                             yy,
                              250.00,
-                             0, 25, 0,
+                             xx, yy, 0,
                              0 , 1, 0);
 
 
@@ -132,10 +145,12 @@ export class FireComponent extends React.Component<Props> {
     render() {
         return <>
             <div style={this.props.style}>
+                <button onClick={this.props.reset}>reset</button>
+                <br/>
                 <canvas width={WIDTH}
                         height={HEIGHT}
                         ref={this.canvas}/>
-                <button onClick={this.props.reset}>reset</button>
+
             </div>
         </>;
     }
@@ -146,6 +161,9 @@ function mapDispatchToProps(dispatch : (p:any) => void) {
     return {
         reset: () => {
             dispatch({type: 'RESET'});
+        },
+        step: () => {
+            dispatch({type: 'STEP'});
         }
     };
 }
