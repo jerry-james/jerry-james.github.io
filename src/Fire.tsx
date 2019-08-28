@@ -35,7 +35,7 @@ export class FireComponent extends React.Component<Props> {
     };
 
     componentDidMount(): void {
-        this.interval = window.setInterval(this.intervalHandler, 200);
+        this.interval = window.setInterval(this.intervalHandler, 500);
         if(this.canvas.current) {
             this.gl = this.canvas.current.getContext("webgl");
             if(this.gl) {
