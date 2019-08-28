@@ -80,7 +80,7 @@ export class FireComponent extends React.Component<Props> {
     };
 
     componentDidMount(): void {
-        this.interval = window.setInterval(this.intervalHandler, 500);
+        this.interval = window.setInterval(this.intervalHandler, 200);
         if(this.canvas.current) {
             this.gl = this.canvas.current.getContext("webgl");
             if(this.gl) {
@@ -88,6 +88,21 @@ export class FireComponent extends React.Component<Props> {
                 if (!this._loader.initShaders(this.gl, vshad, fshad)) {
                     console.log("Failed to init");
                 } else {
+                    let gl = this.gl;
+                    if(this._loader.program) {
+                        let u_viewMatrix = gl.getUniformLocation(this._loader.program, 'u_ViewMatrix');
+                        let u_projMatrix = gl.getUniformLocation(this._loader.program, 'u_ProjMatrix');
+
+                        gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
+                        gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
+
+                        let vertexBuffer = gl.createBuffer();
+                        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+                        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+                        let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
+                        gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
+                        gl.enableVertexAttribArray(a_Position);
+                    }
                     this.renderWebgl();
                 }
 
@@ -116,19 +131,6 @@ export class FireComponent extends React.Component<Props> {
             gl.clear(gl.COLOR_BUFFER_BIT);
 
             let u_modelMatrix = gl.getUniformLocation(this._loader.program, 'u_ModelMatrix');
-            let u_viewMatrix = gl.getUniformLocation(this._loader.program, 'u_ViewMatrix');
-            let u_projMatrix = gl.getUniformLocation(this._loader.program, 'u_ProjMatrix');
-
-            gl.uniformMatrix4fv(u_projMatrix, false, projMatrix.elements);
-            gl.uniformMatrix4fv(u_viewMatrix, false, viewMatrix.elements);
-
-            let vertexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-            let a_Position = gl.getAttribLocation(this._loader.program, 'a_Position');
-            gl.vertexAttribPointer(a_Position, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(a_Position);
-
 
             if(u_modelMatrix) {
                 for(let h of this.props.hexagons) {

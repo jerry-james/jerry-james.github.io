@@ -5,8 +5,9 @@ export type HexagonState = Hexagon[];
 let hexagons : Hexagon[] = [];
 let MAX_X1 = 100;
 let MAX_X2 = 100;
-let pLiving = 0.5;
-let pBurning = 0.999;
+let pLiving = 0.4;
+let pBurning = 0.9999;
+let pNew = 0.95;
 for(let i = 0; i < MAX_X1; i++)  {
     for(let j = 0; j < MAX_X2; j++)
         hexagons[i * MAX_X2 + j] =
@@ -66,11 +67,18 @@ function step(state: HexagonState) : HexagonState {
                     state: 'DEAD'
                 };
             } else if(hprev.state === 'DEAD') {
-                h[i * MAX_X2 + j] = {
-                    x1: i, x2: j,
-                    color: [0.3, 0.3, 0.3, 1.0],
-                    state: 'DEAD'
-                };
+                if(Math.random() > pNew)
+                    h[i * MAX_X2 + j] = {
+                        x1: i, x2: j,
+                        color: [0.0, 1.0, 0.3, 1.0],
+                        state: 'LIVING'
+                    };
+                else
+                    h[i * MAX_X2 + j] = {
+                        x1: i, x2: j,
+                        color: [0.3, 0.3, 0.3, 1.0],
+                        state: 'DEAD'
+                    };
             } else if(hprev.state === 'LIVING') {
                 let n0 = state[(i + 0) * MAX_X2 + (j + 1)];
                 let n1 = state[(i + 0) * MAX_X2 + (j - 1)];
