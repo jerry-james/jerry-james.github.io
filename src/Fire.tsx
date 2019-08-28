@@ -7,6 +7,8 @@ import fshad from "./fshader.glsl";
 import {Matrix4, Vector3} from "./matrix";
 import {Hexagon} from "./Hexagon";
 
+let WIDTH = 800;
+let HEIGHT = 600;
 interface Props {
     style: React.CSSProperties;
     hexagons: Hexagon[]
@@ -67,15 +69,15 @@ export class FireComponent extends React.Component<Props> {
             ]);
         let viewMatrix = new Matrix4();
         viewMatrix.setLookAt(0.0,
-                             0.0,
+                             25.0,
                              250.00,
-                             0, 0, 0,
+                             0, 25, 0,
                              0 , 1, 0);
 
 
 
         let projMatrix = new Matrix4();
-        projMatrix.setPerspective(30, 1980/1080, 1, 1000);
+        projMatrix.setPerspective(30, WIDTH/HEIGHT, 1, 1000);
 
         if(this.gl && this._loader.program) {
             let gl = this.gl;
@@ -125,8 +127,8 @@ export class FireComponent extends React.Component<Props> {
 
         return <>
             <div style={this.props.style}>
-                <canvas width="1980"
-                        height="1080"
+                <canvas width={WIDTH}
+                        height={HEIGHT}
                         ref={this.canvas}/>
             </div>
         </>;
@@ -141,9 +143,18 @@ function mapDispatchToProps() {
 
 function mapStateToProps(state: State) {
     let hexagons : Hexagon[] = [];
-    for(let i = -100; i < 100; i++)
-        for(let j = -100; j < 100; j++)
-            hexagons.push(new Hexagon(i, j, [Math.random(), Math.random(), Math.random(), 1.0]));
+    let MAX_X1 = 44;
+    let MAX_X2 = 50;
+    for(let i = 0; i < MAX_X1; i++)  {
+        for(let j = 0; j < MAX_X2; j++)
+            hexagons[i * MAX_X2 + j] =
+                {
+                    x1: i,
+                    x2: j,
+                    color: [Math.random(), Math.random(), Math.random(), 1.0],
+                    state: 'BURNING'
+                };
+    }
     return {
         hexagons: hexagons,
         style: state.style.main
