@@ -142,21 +142,8 @@ function mapDispatchToProps() {
 
 
 function mapStateToProps(state: State) {
-    let hexagons : Hexagon[] = [];
-    let MAX_X1 = 44;
-    let MAX_X2 = 50;
-    for(let i = 0; i < MAX_X1; i++)  {
-        for(let j = 0; j < MAX_X2; j++)
-            hexagons[i * MAX_X2 + j] =
-                {
-                    x1: i,
-                    x2: j,
-                    color: [Math.random(), Math.random(), Math.random(), 1.0],
-                    state: 'BURNING'
-                };
-    }
     return {
-        hexagons: hexagons,
+        hexagons: state.hexagons,
         style: state.style.main
     }
 }
