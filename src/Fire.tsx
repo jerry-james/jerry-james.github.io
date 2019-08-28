@@ -11,7 +11,8 @@ let WIDTH = 800;
 let HEIGHT = 600;
 interface Props {
     style: React.CSSProperties;
-    hexagons: Hexagon[]
+    hexagons: Hexagon[];
+    reset: () => void;
 }
 
 export class FireComponent extends React.Component<Props> {
@@ -42,8 +43,12 @@ export class FireComponent extends React.Component<Props> {
         }
     }
 
+    shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<{}>, nextContext: any): boolean {
+        return true;
+    }
+
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
-        this.renderWebgl()
+        this.renderWebgl();
     }
 
     renderWebgl() {
@@ -123,21 +128,26 @@ export class FireComponent extends React.Component<Props> {
 
         }
     }
-    render() {
 
+    render() {
         return <>
             <div style={this.props.style}>
                 <canvas width={WIDTH}
                         height={HEIGHT}
                         ref={this.canvas}/>
+                <button onClick={this.props.reset}>reset</button>
             </div>
         </>;
     }
 }
 
 
-function mapDispatchToProps() {
-    return {};
+function mapDispatchToProps(dispatch : (p:any) => void) {
+    return {
+        reset: () => {
+            dispatch({type: 'RESET'});
+        }
+    };
 }
 
 
