@@ -7,7 +7,7 @@ import fshad from "./fshader.glsl";
 import {Matrix4, Vector3} from "./matrix";
 import {Hexagon} from "./Hexagon";
 
-let WIDTH = 800;
+let WIDTH = 1200;
 let HEIGHT = 800;
 interface Props {
     style: React.CSSProperties;
@@ -40,11 +40,11 @@ let vertices = new Float32Array(
 
 
 let viewMatrix = new Matrix4();
-let yy = 50;
+let yy = 150;
 let xx = -5;
 viewMatrix.setLookAt(xx,
                      yy,
-                     450.00,
+                     650.00,
                      xx, yy, 0,
                      0 , 1, 0);
 
@@ -80,7 +80,7 @@ export class FireComponent extends React.Component<Props> {
     };
 
     componentDidMount(): void {
-        this.interval = window.setInterval(this.intervalHandler, 50);
+        this.interval = window.setInterval(this.intervalHandler, 10);
         if(this.canvas.current) {
             this.gl = this.canvas.current.getContext("webgl");
             if(this.gl) {
