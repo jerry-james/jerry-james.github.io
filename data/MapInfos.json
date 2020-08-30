@@ -1,6 +1,6 @@
 [
 null,
 {"id":1,"expanded":true,"name":"MAP001","order":1,"parentId":0,"scrollX":1225.5,"scrollY":683.25},
-{"id":2,"expanded":false,"name":"Mansion","order":3,"parentId":1,"scrollX":1136,"scrollY":1280},
-{"id":3,"expanded":false,"name":"Ruins","order":2,"parentId":1,"scrollX":816,"scrollY":756}
+{"id":2,"expanded":false,"name":"Mansion","order":3,"parentId":1,"scrollX":1213.5,"scrollY":1236.75},
+{"id":3,"expanded":false,"name":"Ruins","order":2,"parentId":1,"scrollX":1213.5,"scrollY":756.75}
 ]
